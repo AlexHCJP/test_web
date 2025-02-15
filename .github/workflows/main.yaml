@@ -44,9 +44,9 @@ jobs:
         with:
           name: build
           path: build/web
-      - name: 🚀 Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: 🔥 Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          branch: gh-pages
-          folder: build/web
-          ssh-key: ${{ secrets.AAAA_TOKEN }}
+          github_token: ${{ secrets.AAAA_TOKEN }}
+          publish_dir: ./build/web
+          publish_branch: gh-pages
