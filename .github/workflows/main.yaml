@@ -50,3 +50,4 @@ jobs:
           branch: gh-pages
           folder: build/web
           ssh-key: ${{ secrets.AAAA_TOKEN }}
+
