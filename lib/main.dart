@@ -1,4 +1,5 @@
 import 'dart:html' as html;
+import 'dart:ui_web' as ui_web;
 import 'package:flutter/material.dart';
 
 /// The entry point of the application.
@@ -66,11 +67,25 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   /// Registers an image element in the DOM.
-  void _registerImageElement() =>
-      html.document.body!.append(html.ImageElement()..id = 'image-element');
+  void _registerImageElement() {
+    final image = html.ImageElement()
+      ..id = 'image-element'
+      ..style.width = '100%'
+      ..style.height = '100%';
+    html.document.body!.append(image);
+    ui_web.platformViewRegistry.registerViewFactory(
+      'image-view',
+      (int viewId) => image,
+    );
+  }
 
   /// Loads an image from the URL entered in the input field.
   void _loadImage() {
+    if (!_urlController.value.isComposingRangeValid) {
+      _urlController.selection =
+          TextSelection.collapsed(offset: _urlController.text.length);
+    }
+
     imageUrl = _urlController.text.isNotEmpty ? _urlController.text : null;
 
     final imgElement =
@@ -122,7 +137,11 @@ class _MyHomePageState extends State<MyHomePage> {
                             color: Colors.grey,
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: const HtmlElementView(viewType: 'image-view'),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child:
+                                const HtmlElementView(viewType: 'image-view'),
+                          ),
                         ),
                       ),
                     ),
